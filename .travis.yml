@@ -1,0 +1,45 @@
+matrix:
+  include:
+  - services: docker
+    os: linux
+    dist: trusty
+    language: python
+    sudo: required
+    env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
+  - services: docker
+    os: linux
+    dist: trusty
+    language: python
+    sudo: required
+    env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686 PRE_CMD=linux32
+  - os: osx
+    osx_image: xcode6.4
+    language: generic
+  - os: osx
+    osx_image: xcode7.3
+    language: generic
+  - os: osx
+    osx_image: xcode8.2
+    language: generic
+    env: SOURCE=TRUE
+before_install:
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew install python3 || brew
+  upgrade python3; pip3 install -U setuptools cython; fi
+- if [[ -n "$DOCKER_IMAGE" ]]; then docker pull $DOCKER_IMAGE; fi
+install: if [[ -z "$DOCKER_IMAGE" ]]; then python3 setup.py install; else docker run
+  --rm -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build-wheels.sh; fi
+script:
+- if [[ -z "$DOCKER_IMAGE" ]]; then python3 test_cyrandom.py; else docker run --rm
+  -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build-wheels.sh; ls wheelhouse/*;
+  fi
+deploy:
+  provider: script
+  script: travis/deploy.sh
+  on:
+    tags: true
+env:
+  global:
+    - secure: fduQ18O/RkAIE8o1xksqbr30NiNY+C+521n89wMuv9TF+cD0k//Zb3p9p+nz/LLGQ6Cvo80NpPbrAObBtaSo0ESBoURXfjHaSitqRj1Nahi7BHFC89DPvCrsbMUIOi1kDiFq+tGlNVohkacIPVfQZxR1P3WScub67+m7mXfc8cmYchQvg0vtDIZKMOpQbkwTaPo0vrflQDqPsuVXZLI0klmTwEstL6b42X5L2hBvISgGM8+jwRo7Jy9FYFENvzp2rAuWD07WEKw/Bpm/w0FlFzWJXMX+zE6NIi3mM6YJigzwya9pecff6/WJSv6cAiGI3HUFYbVUOukN9CxRvPHk7GGGbYocYCyISE+nuUk7YaJ7fzIvNfN2+udYpWXuChpYVVPCTio/x1YIWCq9bXPwwtg8V+QejClY5DdW02RR200pq2hMe5EH+/JKcefNK1iiF33YhZew3TT74j3iz5V/xIRRWHNDDbjKO1PypkGJSf9pd3ZzgiHf/as5QpgXFW+6kLShyAv4ecNQSxMZGY4o0AT8oh/PxyLm2GaqvIz6uTvcHghRV61bNkLZ9YLDBLqrzyXOOLib3L2j3jq7ho/EbKi3Cl7Txe5m24aHrSV0bi20ak7OOIBeOydy6nIrFCUWDhHPp3HYlOkLq9Rg8OwdSnibLgR/R0kvCA8lDHUlOqs=
+    - TWINE_REPOSITORY: https://pypi.python.org/pypi
+    - TWINE_REPOSITORY_URL: https://pypi.python.org/pypi
+    - TWINE_USERNAME: Noctem
