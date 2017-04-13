@@ -60,6 +60,12 @@ class TestRNG(TestCase):
             self.assertTrue(13.7 <= rand <= 47.3)
             self.assertIsInstance(rand, float)
 
+    def test_triangular_int(self, triangular_int=cyrandom.triangular_int):
+        for _ in range(ITERATIONS):
+            rand = triangular_int(-50, 100, 50)
+            self.assertTrue(-50 <= rand <= 100)
+            self.assertIsInstance(rand, int)
+
 
 if __name__ == '__main__':
     main()

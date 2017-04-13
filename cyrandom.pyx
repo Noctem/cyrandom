@@ -116,3 +116,13 @@ def triangular(double low=0.0, double high=1.0, double mode=0.5):
         c = 1.0 - c
         low, high = high, low
     return low + (high - low) * sqrt(u * c)
+
+
+def triangular_int(long low, long high, long mode):
+    cdef double c, u = genrand_res53()
+    c = (mode - low) / (high - low)
+    if u > c:
+        u = 1.0 - u
+        c = 1.0 - c
+        low, high = high, low
+    return <long>(low + (high - low) * sqrt(u * c))

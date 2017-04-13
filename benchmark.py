@@ -2,6 +2,7 @@
 
 from timeit import repeat
 
+
 def compare(cy, py, function):
     print('{}\n'
           '~~~~~~~~~~\n'
@@ -43,6 +44,11 @@ def main():
     cy = min(repeat('triangular(203.5, 951.2, 251.7)', setup='from cyrandom import triangular'))
     py = min(repeat('triangular(203.5, 951.2, 251.7)', setup='from random import triangular'))
     compare(cy, py, 'triangular')
+
+    cy = min(repeat('triangular_int(204, 951, 252)', setup='from cyrandom import triangular_int'))
+    print('triangular_int\n'
+          '~~~~~~~~~~~~~~\n'
+          'Cython: {:.5f}\n\n'.format(cy))
 
 if __name__ == '__main__':
     main()

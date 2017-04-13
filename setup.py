@@ -8,7 +8,7 @@ ext = Extension("cyrandom",
 
 setup(
     name="cyrandom",
-    version='0.1.0',
+    version='0.1.1',
     description='Fast random number generation.',
     long_description="A fast cython replacement for the standard library's random module.",
     url='https://github.com/Noctem/cyrandom',
