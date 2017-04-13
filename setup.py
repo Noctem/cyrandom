@@ -1,14 +1,21 @@
 from setuptools import setup, Extension
-from Cython.Build import cythonize
-
-ext = Extension("cyrandom",
-                sources=["cyrandom.pyx",
-                         "_mersenne.c",
-                         "_seed.c"])
+try:
+    from Cython.Build import cythonize
+    ext = cythonize([
+        Extension("cyrandom",
+                  sources=["cyrandom.pyx",
+                           "_mersenne.c",
+                           "_seed.c"])],
+        compiler_directives={'language_level': 3})
+except ImportError:
+    ext = [Extension("cyrandom",
+                     sources=["cyrandom.c",
+                              "_mersenne.c",
+                              "_seed.c"])]
 
 setup(
     name="cyrandom",
-    version='0.1.2',
+    version='0.1.3',
     description='Fast random number generation.',
     long_description="A fast cython replacement for the standard library's random module.",
     url='https://github.com/Noctem/cyrandom',
@@ -26,6 +33,5 @@ setup(
         'License :: OSI Approved :: MIT License'
     ],
     keywords='cyrandom random rng cython',
-    ext_modules = cythonize([ext],
-                            compiler_directives={'language_level': 3})
+    ext_modules=ext
 )
