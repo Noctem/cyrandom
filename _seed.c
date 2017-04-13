@@ -23,14 +23,14 @@ static void random_seed_time_pid(void) {
   unsigned long key[5];
 
   now = _PyTime_GetSystemClock();
-  key[0] = (uint32_t)(now & 0xffffffffU);
-  key[1] = (uint32_t)(now >> 32);
+  key[0] = (unsigned long)(now & 0xffffffffU);
+  key[1] = (unsigned long)(now >> 32);
 
-  key[2] = (uint32_t)getpid();
+  key[2] = (unsigned long)getpid();
 
   now = _PyTime_GetMonotonicClock();
-  key[3] = (uint32_t)(now & 0xffffffffU);
-  key[4] = (uint32_t)(now >> 32);
+  key[3] = (unsigned long)(now & 0xffffffffU);
+  key[4] = (unsigned long)(now >> 32);
 
   init_by_array(key, Py_ARRAY_LENGTH(key));
 }

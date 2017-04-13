@@ -6,6 +6,11 @@ import cyrandom
 
 
 class TestRNG(TestCase):
+    def test_randrange(self):
+        rand = cyrandom.randrange(700, 3000)
+        self.assertTrue(700 <= rand < 3000)
+        self.assertIsInstance(rand, int)
+
     def test_randint(self):
         rand = cyrandom.randint(700, 3000)
         self.assertTrue(700 <= rand <= 3000)
