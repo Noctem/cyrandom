@@ -24,7 +24,7 @@ else
 
 	cd travis
 	brew uninstall python3
-	brew install python35.rb
+	brew install https://raw.githubusercontent.com/Noctem/pogeo-toolchain/master/python35.rb
 	cd ..
 	echo "Successfully installed Python 3.5."
 
