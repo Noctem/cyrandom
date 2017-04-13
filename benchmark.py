@@ -12,6 +12,10 @@ def compare(cy, py, function):
 
 
 def main():
+    cy = min(repeat('random()', setup='from cyrandom import random'))
+    py = min(repeat('random()', setup='from random import random'))
+    compare(cy, py, 'random')
+
     cy = min(repeat('randrange(700, 3000)', setup='from cyrandom import randrange'))
     py = min(repeat('randrange(700, 3000)', setup='from random import randrange'))
     compare(cy, py, 'randrange')

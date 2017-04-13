@@ -9,6 +9,12 @@ ITERATIONS = 10000
 
 
 class TestRNG(TestCase):
+    def test_random(self, random=cyrandom.random):
+        for _ in range(ITERATIONS):
+            rand = random()
+            self.assertTrue(0 <= rand <= 1.0)
+            self.assertIsInstance(rand, float)
+
     def test_randrange(self, randrange=cyrandom.randrange):
         for _ in range(ITERATIONS):
             rand = randrange(700, 3000)

@@ -10,6 +10,12 @@ from _mersenne cimport genrand_int32, genrand_res53
 random_seed()
 
 
+def random():
+    """Return a Python float between 0.0 and 1.0
+    """
+    return genrand_res53()
+
+
 cdef unsigned short bit_length(unsigned long n):
     cdef unsigned short length = 0
     while n != 0:
