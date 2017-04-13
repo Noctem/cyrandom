@@ -4,6 +4,7 @@
 #endif
 #include "_mersenne.h"
 
+#if PY_MINOR_VERSION >= 6
 #define N 624
 
 static int random_seed_urandom(void) {
@@ -15,6 +16,7 @@ static int random_seed_urandom(void) {
   init_by_array(key, Py_ARRAY_LENGTH(key));
   return 0;
 }
+#endif
 
 static void random_seed_time_pid(void) {
   _PyTime_t now;
@@ -34,6 +36,8 @@ static void random_seed_time_pid(void) {
 }
 
 void random_seed(void) {
+#if PY_MINOR_VERSION >= 6
   if (random_seed_urandom() < 0)
+#endif
     random_seed_time_pid();
 }
