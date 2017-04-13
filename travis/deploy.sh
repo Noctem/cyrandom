@@ -3,7 +3,7 @@
 set -e
 
 macbuild() {
-	pip3 install -U twine setuptools wheel
+	pip3 install -U twine setuptools wheel cython
 	rm -rf dist build
 	if [[ "$1" = "sdist" && "$SOURCE" = TRUE ]]; then
 		python3 setup.py sdist bdist_wheel
@@ -15,7 +15,7 @@ macbuild() {
 }
 
 if [[ "$DOCKER_IMAGE" ]]; then
-	pip3 install -U twine
+	pip install -U twine
 	twine upload --skip-existing wheelhouse/*.whl
 	echo "Successfully uploaded Linux wheels."
 else
