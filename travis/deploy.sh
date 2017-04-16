@@ -22,10 +22,8 @@ else
 	macbuild sdist
 	echo "Successfully uploaded Python 3.6 wheel and source."
 
-	cd travis
 	brew uninstall python3
 	brew install https://raw.githubusercontent.com/Noctem/pogeo-toolchain/master/python35.rb
-	cd ..
 	echo "Successfully installed Python 3.5."
 
 	macbuild

@@ -19,7 +19,7 @@ matrix:
     osx_image: xcode7.3
     language: generic
   - os: osx
-    osx_image: xcode8.2
+    osx_image: xcode8.3
     language: generic
     env: SOURCE=TRUE
 before_install:
@@ -29,8 +29,7 @@ before_install:
 install: if [[ -z "$DOCKER_IMAGE" ]]; then python3 setup.py install; else docker run
   --rm -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build-wheels.sh; fi
 script:
-- if [[ -z "$DOCKER_IMAGE" ]]; then python3 test_cyrandom.py; else docker run --rm
-  -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build-wheels.sh; ls wheelhouse/*;
+- if [[ -z "$DOCKER_IMAGE" ]]; then python3 test_cyrandom.py; else ls wheelhouse/*;
   fi
 deploy:
   provider: script
