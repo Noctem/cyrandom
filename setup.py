@@ -1,6 +1,8 @@
 from setuptools import setup, Extension
+
 try:
     from Cython.Build import cythonize
+
     ext = cythonize([
         Extension("cyrandom",
                   sources=["cyrandom.pyx",
@@ -15,7 +17,7 @@ except ImportError:
 
 setup(
     name="cyrandom",
-    version='0.1.3',
+    version='0.2.0',
     description='Fast random number generation.',
     long_description="A fast cython replacement for the standard library's random module.",
     url='https://github.com/Noctem/cyrandom',

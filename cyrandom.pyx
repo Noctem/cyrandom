@@ -10,8 +10,8 @@ from _mersenne cimport genrand_int32, genrand_res53
 random_seed()
 
 
-def random():
-    """Return a Python float between 0.0 and 1.0
+cpdef double random():
+    """Return a double between 0.0 and 1.0
     """
     return genrand_res53()
 
@@ -38,7 +38,7 @@ cpdef long randrange(long start, long stop):
     return start + _randbelow(width)
 
 
-def randint(long a, long b):
+cpdef long randint(long a, long b):
     """Return random integer in range [a, b], including both end points.
     """
     return randrange(a, b+1)
@@ -101,13 +101,13 @@ def choose_weighted(tuple population, tuple cum_weights):
     return population[bisect(cum_weights, random() * total)]
 
 
-def uniform(double a, double b):
+cpdef double uniform(double a, double b):
     """Get a random number in the range [a, b) or [a, b] depending on rounding.
     """
     return a + (b-a) * genrand_res53()
 
 
-def triangular(double low=0.0, double high=1.0, double mode=0.5):
+cpdef double triangular(double low=0.0, double high=1.0, double mode=0.5):
     """Triangular distribution.
 
     Continuous distribution bounded by given lower and upper limits,
@@ -124,7 +124,7 @@ def triangular(double low=0.0, double high=1.0, double mode=0.5):
     return low + (high - low) * sqrt(u * c)
 
 
-def triangular_int(long low, long high, long mode):
+cpdef long triangular_int(long low, long high, long mode):
     cdef double c, u = genrand_res53()
     c = (mode - low) / (high - low)
     if u > c:

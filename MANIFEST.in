@@ -3,3 +3,4 @@ include _mersenne.pxd
 include _seed.h
 include _seed.pxd
 include cyrandom.pyx
+include cyrandom.pxd
