@@ -1,4 +1,4 @@
-cdef extern from "_mersenne.h":
+cdef extern from "_mersenne.h" nogil:
     # initializes mt[N] with a seed
     void init_genrand(unsigned long s)
 

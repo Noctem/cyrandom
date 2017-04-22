@@ -1,10 +1,10 @@
+from libc.math cimport sqrt
+
 from bisect import bisect as _bisect
 from itertools import accumulate as _accumulate
 
-from libc.math cimport sqrt
-
-from _seed cimport random_seed
-from _mersenne cimport genrand_int32, genrand_res53
+from ._seed cimport random_seed
+from ._mersenne cimport genrand_int32, genrand_res53
 
 
 random_seed()
