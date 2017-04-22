@@ -20,7 +20,7 @@ build_script:
 
     %PYTHON%\\python.exe setup.py bdist_wheel
 test_script:
-- cmd: '%PYTHON%\\python.exe test_cyrandom.py'
+- cmd: '%PYTHON%\\python.exe test\test_cyrandom.py'
 artifacts:
 - path: dist\*.whl
   name: Wheel

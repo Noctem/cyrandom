@@ -16,5 +16,5 @@ done
 # Install packages and test
 for PYBIN in /opt/python/cp3[56789]*/bin/; do
 	"${PYBIN}/pip" install cyrandom --no-index -f /io/wheelhouse
-	"${PYBIN}/python" /io/test_cyrandom.py
+	"${PYBIN}/python" /io/test/test_cyrandom.py
 done
