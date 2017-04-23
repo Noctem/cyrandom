@@ -1,3 +1,6 @@
+# distutils: language = c
+# cython: language_level=3
+
 from libc.math cimport sqrt
 
 from bisect import bisect as _bisect

@@ -2,19 +2,18 @@ from setuptools import setup, Extension
 
 try:
     from Cython.Build import cythonize
-
-    ext = cythonize([
-        Extension("cyrandom.cyrandom",
-                  sources=["cyrandom/cyrandom.pyx",
-                           "cyrandom/_mersenne.c",
-                           "cyrandom/_seed.c"])],
-        compiler_directives={'language_level': 3})
+    file_ext = 'pyx'
 except ImportError:
-    ext = [Extension("cyrandom.cyrandom",
-                     sources=["cyrandom/cyrandom.c",
-                              "cyrandom/_mersenne.c",
-                              "cyrandom/_seed.c"],
-                     language='C')]
+    file_ext = 'c'
+
+ext = [Extension("cyrandom.cyrandom",
+                 sources=["cyrandom/cyrandom." + file_ext,
+                          "cyrandom/_mersenne.c",
+                          "cyrandom/_seed.c"],
+                 language='c')]
+
+if file_ext == 'pyx':
+    ext = cythonize(ext)
 
 setup(
     name="cyrandom",
@@ -28,6 +27,7 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
+        'Programming Language :: C',
         'Programming Language :: Cython',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',

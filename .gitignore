@@ -89,5 +89,5 @@ ENV/
 .ropeproject
 
 # Cythonized output
-cyrandom.c
-cyrandom.html
+cyrandom/cyrandom.c
+cyrandom/cyrandom.html
