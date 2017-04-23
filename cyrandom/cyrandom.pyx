@@ -13,13 +13,13 @@ from ._mersenne cimport genrand_int32, genrand_res53
 random_seed()
 
 
-cpdef double random():
+cpdef double random() nogil:
     """Return a double between 0.0 and 1.0
     """
     return genrand_res53()
 
 
-cdef unsigned short bit_length(unsigned long n):
+cdef unsigned short bit_length(unsigned long n) nogil:
     cdef unsigned short length = 0
     while n != 0:
         length += 1
@@ -27,11 +27,11 @@ cdef unsigned short bit_length(unsigned long n):
     return length
 
 
-cdef unsigned long getrandbits(unsigned short k):
+cdef unsigned long getrandbits(unsigned short k) nogil:
     return genrand_int32() >> (32 - k)
 
 
-cpdef long randrange(long start, long stop):
+cpdef long randrange(long start, long stop) nogil:
     """Choose a random item from range(start, stop).
 
     This fixes the problem with randint() which includes the
@@ -41,13 +41,13 @@ cpdef long randrange(long start, long stop):
     return start + _randbelow(width)
 
 
-cpdef long randint(long a, long b):
+cpdef long randint(long a, long b) nogil:
     """Return random integer in range [a, b], including both end points.
     """
     return randrange(a, b+1)
 
 
-cdef unsigned long _randbelow(unsigned long n):
+cdef unsigned long _randbelow(unsigned long n) nogil:
     """Return a random int in the range [0,n).  Raises ValueError if n==0.
     """
     _getrandbits = getrandbits
@@ -104,13 +104,13 @@ def choose_weighted(tuple population, tuple cum_weights):
     return population[bisect(cum_weights, random() * total)]
 
 
-cpdef double uniform(double a, double b):
+cpdef double uniform(double a, double b) nogil:
     """Get a random number in the range [a, b) or [a, b] depending on rounding.
     """
     return a + (b-a) * genrand_res53()
 
 
-cpdef double triangular(double low=0.0, double high=1.0, double mode=0.5):
+cpdef double triangular(double low=0.0, double high=1.0, double mode=0.5) nogil:
     """Triangular distribution.
 
     Continuous distribution bounded by given lower and upper limits,
@@ -127,7 +127,7 @@ cpdef double triangular(double low=0.0, double high=1.0, double mode=0.5):
     return low + (high - low) * sqrt(u * c)
 
 
-cpdef long triangular_int(long low, long high, long mode):
+cpdef long triangular_int(long low, long high, long mode) nogil:
     cdef double c, u = genrand_res53()
     c = (mode - low) / (high - low)
     if u > c:

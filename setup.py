@@ -37,5 +37,5 @@ setup(
     ],
     keywords='cyrandom random rng cython',
     packages=['cyrandom'],
-    package_data={'cyrandom': ['cyrandom.pxd']},
+    package_data={'cyrandom': ['cyrandom.pxd', '__init__.pxd']},
     ext_modules=ext)
