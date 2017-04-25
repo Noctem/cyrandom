@@ -17,7 +17,7 @@ if file_ext == 'pyx':
 
 setup(
     name="cyrandom",
-    version='0.2.1',
+    version='0.3.0',
     description='Fast random number generation.',
     long_description="A fast cython replacement for the standard library's random module.",
     url='https://github.com/Noctem/cyrandom',
