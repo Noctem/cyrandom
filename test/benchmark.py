@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from timeit import repeat
+from timeit import timeit, repeat
 
 
 def compare(cy, py, function):
@@ -28,8 +28,8 @@ def main():
     py = min(repeat('choice(seq)', setup='from random import choice; seq = tuple(range(50, 500))'))
     compare(cy, py, 'choice')
 
-    cy = min(repeat('shuffle(seq)', setup='from cyrandom import shuffle; seq = list(range(50, 500))', number=100000))
-    py = min(repeat('shuffle(seq)', setup='from random import shuffle; seq = list(range(50, 500))', number=100000))
+    cy = timeit('shuffle(seq)', setup='from cyrandom import shuffle; seq = list(range(50, 500))', number=100000)
+    py = timeit('shuffle(seq)', setup='from random import shuffle; seq = list(range(50, 500))', number=100000)
     compare(cy, py, 'shuffle')
 
     cy = min(repeat('choices(seq, weights)', setup='from cyrandom import choices; seq = (-1, 10, 12, 16, 24, 32, 48, 96); weights = (50, 84, 89, 92, 96, 98, 99, 100)'))

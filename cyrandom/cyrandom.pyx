@@ -1,8 +1,8 @@
 # distutils: language = c
 # cython: language_level=3
 
-from libc.math cimport sqrt
-from libc.stdint cimport int32_t, uint16_t, uint32_t
+from libc.math cimport log2, sqrt
+from libc.stdint cimport int32_t, uint8_t, uint16_t, uint32_t
 
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 
@@ -19,15 +19,11 @@ cpdef double random() nogil:
     return genrand_res53()
 
 
-cdef uint16_t bit_length(uint32_t n) nogil:
-    cdef uint16_t length = 0
-    while n != 0:
-        length += 1
-        n >>= 1
-    return length
+cpdef uint8_t bit_length(uint32_t n) nogil:
+    return <uint8_t>log2(n) + 1
 
 
-cdef uint32_t getrandbits(uint16_t k) nogil:
+cdef uint32_t getrandbits(uint8_t k) nogil:
     return genrand_int32() >> (32 - k)
 
 
@@ -61,11 +57,10 @@ cpdef int32_t randint(int32_t a, int32_t b) nogil:
 cdef uint32_t _randbelow(uint32_t n) nogil:
     """Return a random int in the range [0,n).  Raises ValueError if n==0.
     """
-    _getrandbits = getrandbits
-    cdef uint16_t k = bit_length(n)  # don't use (n-1) here because n can be 1
-    cdef uint32_t r = _getrandbits(k)  # 0 <= r < 2**k
+    cdef uint8_t k = bit_length(n)  # don't use (n-1) here because n can be 1
+    cdef uint32_t r = getrandbits(k)  # 0 <= r < 2**k
     while r >= n:
-        r = _getrandbits(k)
+        r = getrandbits(k)
     return r
 
 
@@ -105,19 +100,19 @@ def choices(population, tuple weights=None, *, tuple cum_weights=None, Py_ssize_
             return output
 
         num_weights = len(weights)
-        _cum_weights = <uint16_t*> PyMem_Malloc(num_weights * 2)
+        _cum_weights = <uint16_t*> PyMem_Malloc(num_weights * sizeof(uint16_t))
         total = 0
         for i in range(num_weights):
             total += weights[i]
             _cum_weights[i] = total
     else:
         num_weights = len(cum_weights)
-        _cum_weights = <uint16_t*> PyMem_Malloc(num_weights * 2)
+        _cum_weights = <uint16_t*> PyMem_Malloc(num_weights * sizeof(uint16_t))
         for i in range(num_weights):
             _cum_weights[i] = cum_weights[i]
         total = _cum_weights[num_weights - 1]
 
-    cdef uint16_t lo, mid, hi
+    cdef uint32_t lo, mid, hi
     cdef double x
     for i in range(k):
         lo = 0
@@ -138,13 +133,13 @@ def choices(population, tuple weights=None, *, tuple cum_weights=None, Py_ssize_
 def choose_weighted(tuple population, tuple cum_weights):
     """Return an item from population according to provided weights.
     """
-    cdef uint16_t hi = len(population)
+    cdef uint32_t hi = len(population)
 
     if len(cum_weights) != hi:
         raise ValueError('The number of weights does not match the population')
 
     cdef uint32_t total = cum_weights[-1]
-    cdef uint16_t lo, mid
+    cdef uint32_t lo, mid
     cdef double x
     lo = 0
     x = genrand_res53() * total

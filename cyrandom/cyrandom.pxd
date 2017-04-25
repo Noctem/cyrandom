@@ -1,10 +1,10 @@
-from libc.stdint cimport int32_t, uint16_t, uint32_t, uint64_t
+from libc.stdint cimport int32_t, uint8_t, uint32_t, uint64_t
 
 cpdef double random() nogil
 
-cdef uint16_t bit_length(uint32_t n) nogil
+cpdef uint8_t bit_length(uint32_t n) nogil
 
-cdef uint32_t getrandbits(uint16_t k) nogil
+cdef uint32_t getrandbits(uint8_t k) nogil
 
 cpdef int32_t randrange(int32_t start, int32_t stop, uint32_t step=?) nogil
 
